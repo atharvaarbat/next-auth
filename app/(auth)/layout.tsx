@@ -35,16 +35,19 @@ const layout = ({ children }: Props) => {
                     </div>
                 </div>
             </div>
-            <div className="col-span-3 relative hidden bg-muted/30 lg:block overflow-hidden rounded-l-4xl">
-                {/* <img
-                    src="/auth-bg.png"
-                    alt="Image"
-                    className="absolute inset-0 h-full w-full object-cover"
-                /> */}
-                <div className="h-screen w-full overflow-hidden ">
-                    {/* <div className="to-background absolute inset-0 bg-radial from-transparent to-200%" /> */}
-                    <DottedMap markers={markers} pulse />
+            <div className="col-span-3 relative hidden rounded-l-2xl dark:rounded-l-0 bg-muted dark:bg-muted/30 lg:block overflow-hidden">
+                <div className="absolute top-25 left-10 text-center z-20">
+                    <h1 className='text-4xl font-medium'>The Next Big <span className='font-bold italic'> Auth</span></h1>
                 </div>
+                <div className="dark:hidden block h-screen w-full overflow-hidden z-5">
+                    <DottedMap markers={markers} pulse dotColor='#000' />
+                </div>
+                <div className="hidden dark:block h-screen w-full overflow-hidden z-5">
+                    <DottedMap markers={markers} pulse  />
+                </div>
+                {/* Vignette: transparent in the center, darkening to the
+                    background color toward the edges. */}
+                <div className="pointer-events-none absolute z-10 inset-0 dark:bg-[radial-gradient(ellipse_at_center,transparent_35%,var(--background)_100%)]" />
             </div>
         </div>
     )
