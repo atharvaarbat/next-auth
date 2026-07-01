@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label"
 function SubmitButton() {
   const { pending } = useFormStatus()
   return (
-    <Button type="submit" className="w-full" disabled={pending}>
+    <Button type="submit" className="w-full my-4" size='lg' disabled={pending}>
       {pending ? "Signing in…" : "Sign in"}
     </Button>
   )
@@ -22,11 +22,13 @@ export default function SignInPage() {
   const [state, action] = useActionState<AuthState, FormData>(signIn, {})
 
   return (
-    <Card className="max-w-xl ">
-      <CardHeader className="text-center">
-        <CardTitle className="text-2xl">Welcome back</CardTitle>
-        <CardDescription>Welcome back! Sign in to continue</CardDescription>
-      </CardHeader>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-semibold">
+          Welcome back
+        </h1>
+        <p className="text-[12px] text-muted-foreground mt-2">Sign in to continue</p>
+      </div>
       <CardContent>
         <form action={action} className="space-y-4">
           {state.error && (
@@ -35,7 +37,7 @@ export default function SignInPage() {
             </p>
           )}
 
-          <div className="space-y-1.5">
+          <div className="space-y-2.5">
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
@@ -44,13 +46,14 @@ export default function SignInPage() {
               placeholder="you@example.com"
               autoComplete="email"
               required
+              className="h-8"
             />
             {state.fieldErrors?.email && (
               <p className="text-xs text-destructive">{state.fieldErrors.email[0]}</p>
             )}
           </div>
 
-          <div className="space-y-1.5">
+          <div className="space-y-2.5">
             <div className="flex items-center justify-between">
               <Label htmlFor="password">Password</Label>
               <Link
@@ -67,6 +70,8 @@ export default function SignInPage() {
               placeholder="••••••••"
               autoComplete="current-password"
               required
+              className="h-8"
+
             />
             {state.fieldErrors?.password && (
               <p className="text-xs text-destructive">{state.fieldErrors.password[0]}</p>
@@ -83,6 +88,6 @@ export default function SignInPage() {
           </p>
         </form>
       </CardContent>
-    </Card>
+    </div>
   )
 }
