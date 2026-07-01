@@ -8,11 +8,12 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { PasswordInput } from "@/components/ui/password-input"
 
 function SubmitButton() {
   const { pending } = useFormStatus()
   return (
-    <Button type="submit" className="w-full my-4" size='lg' disabled={pending}>
+    <Button type="submit" className="w-full my-4 h-11" size='lg' disabled={pending}>
       {pending ? "Signing in…" : "Sign in"}
     </Button>
   )
@@ -63,15 +64,13 @@ export default function SignInPage() {
                 Forgot password?
               </Link>
             </div>
-            <Input
+            <PasswordInput
               id="password"
               name="password"
-              type="password"
               placeholder="••••••••"
               autoComplete="current-password"
               required
               className="h-8"
-
             />
             {state.fieldErrors?.password && (
               <p className="text-xs text-destructive">{state.fieldErrors.password[0]}</p>

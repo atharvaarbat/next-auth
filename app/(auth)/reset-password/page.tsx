@@ -10,6 +10,7 @@ import { CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp"
 import { Label } from "@/components/ui/label"
+import { PasswordInput } from "@/components/ui/password-input"
 
 function SubmitButton() {
   const { pending } = useFormStatus()
@@ -78,10 +79,9 @@ export default function ResetPasswordPage({
 
             <div className="space-y-2.5">
               <Label htmlFor="password">New password</Label>
-              <Input
+              <PasswordInput
                 id="password"
                 name="password"
-                type="password"
                 placeholder="••••••••"
                 autoComplete="new-password"
                 required
@@ -89,6 +89,21 @@ export default function ResetPasswordPage({
               />
               {state.fieldErrors?.password && (
                 <p className="text-xs text-destructive">{state.fieldErrors.password[0]}</p>
+              )}
+            </div>
+
+            <div className="space-y-2.5">
+              <Label htmlFor="confirmPassword">Confirm new password</Label>
+              <PasswordInput
+                id="confirmPassword"
+                name="confirmPassword"
+                placeholder="••••••••"
+                autoComplete="new-password"
+                required
+                className="h-8"
+              />
+              {state.fieldErrors?.confirmPassword && (
+                <p className="text-xs text-destructive">{state.fieldErrors.confirmPassword[0]}</p>
               )}
             </div>
 

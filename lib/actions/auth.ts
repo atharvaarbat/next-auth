@@ -16,6 +16,10 @@ const signUpSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: emailSchema,
   password: z.string().min(8, "Password must be at least 8 characters"),
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
 })
 
 const signInSchema = z.object({
@@ -36,6 +40,10 @@ const resetPasswordSchema = z.object({
   email: emailSchema,
   otp: otpSchema,
   password: z.string().min(8, "Password must be at least 8 characters"),
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
 })
 
 export type AuthState = {
@@ -64,6 +72,7 @@ export async function signUp(_prevState: AuthState, formData: FormData): Promise
     name: formData.get("name"),
     email: formData.get("email"),
     password: formData.get("password"),
+    confirmPassword: formData.get("confirmPassword"),
   })
 
   if (!result.success) {
@@ -197,6 +206,7 @@ export async function resetPassword(_prevState: OtpState, formData: FormData): P
     email: formData.get("email"),
     otp: formData.get("otp"),
     password: formData.get("password"),
+    confirmPassword: formData.get("confirmPassword"),
   })
 
   if (!result.success) {
