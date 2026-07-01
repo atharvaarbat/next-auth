@@ -1,0 +1,32 @@
+import { NextResponse } from "next/server"
+import type { NextRequest } from "next/server"
+
+const COOKIE_NAME = "auth-token"
+const publicPaths = ["/sign-in", "/sign-up", "/verify-email", "/forgot-password", "/reset-password"]
+
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+  const token = request.cookies.get(COOKIE_NAME)?.value
+  const isPublic = publicPaths.some((p) => pathname.startsWith(p))
+
+  if (!token && !isPublic) {
+    return NextResponse.redirect(new URL("/sign-in", request.url))
+  }
+
+  if (token && isPublic) {
+    return NextResponse.redirect(new URL("/dashboard", request.url))
+  }
+
+  return NextResponse.next()
+}
+
+export const config = {
+  matcher: [
+    "/dashboard/:path*",
+    "/sign-in",
+    "/sign-up",
+    "/verify-email",
+    "/forgot-password",
+    "/reset-password",
+  ],
+}
