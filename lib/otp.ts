@@ -2,6 +2,7 @@ import crypto from "crypto"
 import bcrypt from "bcrypt"
 import { db } from "@/lib/db"
 import type { VerificationType } from "@/app/generated/prisma/enums"
+import { Prisma } from "@/app/generated/prisma/client"
 
 const OTP_LENGTH = 6
 const OTP_TTL_MINUTES = 10
@@ -26,7 +27,7 @@ export async function createOtp(params: {
       email,
       type,
       otpHash,
-      payload: payload ?? undefined,
+      payload: payload ? (payload as Prisma.InputJsonValue) : Prisma.JsonNull,
       expiresAt: new Date(Date.now() + OTP_TTL_MINUTES * 60 * 1000),
     },
   })
