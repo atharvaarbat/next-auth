@@ -1,5 +1,4 @@
 import { DottedMap, Marker } from '@/components/ui/dotted-map'
-import { GalleryVerticalEnd } from 'lucide-react'
 import React from 'react'
 
 type Props = {
@@ -23,7 +22,7 @@ const layout = ({ children }: Props) => {
     return (
         <div className="grid min-h-svh lg:grid-cols-5">
             <div className="col-span-5 lg:col-span-2 flex flex-col gap-4 p-6 md:p-10">
-                <div className="flex justify-center gap-2 md:justify-start">
+                <div className="flex justify-center gap-2 md:justify-start animate-fade-in">
                     <a href="#" className="flex items-center gap-2 font-medium">
                         <img src="/vercel.svg" alt="Logo" className="h-6 w-6" />
                         Next Auth
@@ -35,9 +34,19 @@ const layout = ({ children }: Props) => {
                     </div>
                 </div>
             </div>
-            <div className="col-span-3 relative hidden rounded-l-2xl dark:rounded-l-0 bg-muted dark:bg-muted/70 lg:block overflow-hidden">
-                <div className="absolute top-25 left-10 text-center z-20">
-                    <h1 className='text-4xl font-medium'>The Next Big <span className='font-bold italic'> Auth</span></h1>
+            <div className="col-span-3 relative hidden rounded-l-2xl dark:rounded-l-0 bg-muted dark:bg-muted/30 lg:block overflow-hidden">
+                <div className="absolute inset-0 z-20  p-12 animate-slide-in-right">
+                    {/* <p className="text-xs font-mono uppercase tracking-[0.2em] mb-4">
+                        Authentication Template
+                    </p> */}
+                    <h1 className="text-4xl font-light leading-tight text-foreground/90 max-w-xs">
+                        Build faster.
+                        <br />
+                        <span className="font-semibold text-primary">Ship sooner.</span>
+                    </h1>
+                    <p className="text-sm mt-2 max-w-xs leading-relaxed">
+                        Pre-built auth flows so you can focus on what makes your product unique.
+                    </p>
                 </div>
                 <div className="dark:hidden block h-screen w-full overflow-hidden z-5">
                     <DottedMap markers={markers} pulse dotColor='#000' />
@@ -45,10 +54,15 @@ const layout = ({ children }: Props) => {
                 <div className="hidden dark:block h-screen w-full overflow-hidden z-5">
                     <DottedMap markers={markers} pulse />
                 </div>
-                {/* Vignette: transparent in the center, darkening to the
-                    background color toward the edges. */}
-                <div className="pointer-events-none absolute z-10 inset-0 dark:bg-[radial-gradient(ellipse_at_center,transparent_35%,var(--background)_100%)]" />
-            </div>
+                <div
+                    className="pointer-events-none absolute z-10 inset-0"
+                    style={{
+                        backdropFilter: 'blur(8px)',
+                        WebkitBackdropFilter: 'blur(8px)',
+                        maskImage: 'radial-gradient(ellipse at center, transparent 25%, black 70%)',
+                        WebkitMaskImage: 'radial-gradient(ellipse at center, transparent 25%, black 70%)',
+                    }}
+                />            </div>
         </div>
     )
 }

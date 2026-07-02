@@ -23,21 +23,21 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">
+      <div className="animate-fade-in-up animate-stagger-1">
+        <h1 className="text-2xl font-semibold tracking-tight">
           Forgot password?
         </h1>
-        <p className="text-[12px] text-muted-foreground mt-2">Enter your email and we&apos;ll send you a reset code</p>
+        <p className="text-sm text-muted-foreground mt-1.5">Enter your email and we&apos;ll send you a reset code</p>
       </div>
-      <CardContent>
+      <CardContent className="p-0">
         <form action={action} className="space-y-4">
           {state.error && (
-            <p className="text-sm text-destructive bg-destructive/10 px-3 py-2 rounded-md">
+            <div className="animate-fade-in text-sm text-destructive bg-destructive/8 border border-destructive/15 px-3.5 py-2.5 rounded-lg">
               {state.error}
-            </p>
+            </div>
           )}
 
-          <div className="space-y-2.5">
+          <div className="space-y-2.5 animate-fade-in-up animate-stagger-2">
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
@@ -46,18 +46,20 @@ export default function ForgotPasswordPage() {
               placeholder="you@example.com"
               autoComplete="email"
               required
-              className="h-8"
+              className="h-9 transition-shadow focus-visible:shadow-[0_0_0_1px_var(--ring)]"
             />
             {state.fieldErrors?.email && (
               <p className="text-xs text-destructive">{state.fieldErrors.email[0]}</p>
             )}
           </div>
 
-          <SubmitButton />
+          <div className="animate-fade-in-up animate-stagger-3">
+            <SubmitButton />
+          </div>
 
-          <p className="text-center text-sm text-muted-foreground">
+          <p className="text-center text-sm text-muted-foreground animate-fade-in-up animate-stagger-4">
             Remembered your password?{" "}
-            <Link href="/sign-in" className="text-foreground underline underline-offset-4 hover:text-primary">
+            <Link href="/sign-in" className="text-foreground underline underline-offset-4 hover:text-foreground/80 transition-colors">
               Sign in
             </Link>
           </p>

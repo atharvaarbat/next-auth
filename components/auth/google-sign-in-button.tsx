@@ -6,12 +6,12 @@ export function GoogleSignInButton() {
   return (
     <Button
       variant="outline"
-      className="w-full h-11 hover:bg-muted"
+      className="w-full h-11 gap-2 transition-all duration-200 hover:bg-muted/50 active:scale-[0.98]"
       onClick={() => {
         window.location.href = "/api/auth/google"
       }}
     >
-      <svg viewBox="0 0 24 24" className="mr-2 size-4" aria-hidden="true">
+      <svg viewBox="0 0 24 24" className="size-4 shrink-0" aria-hidden="true">
         <path
           d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"
           fill="#4285F4"

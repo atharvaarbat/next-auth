@@ -25,21 +25,21 @@ export default function SignInPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">
+      <div className="animate-fade-in-up animate-stagger-1">
+        <h1 className="text-2xl font-semibold tracking-tight">
           Welcome back
         </h1>
-        <p className="text-[12px] text-muted-foreground mt-2">Sign in to continue</p>
+        <p className="text-sm text-muted-foreground mt-1.5">Sign in to your account</p>
       </div>
-      <CardContent>
+      <CardContent className="p-0">
         <form action={action} className="space-y-4">
           {state.error && (
-            <p className="text-sm text-destructive bg-destructive/10 px-3 py-2 rounded-md">
+            <div className="animate-fade-in text-sm text-destructive bg-destructive/8 border border-destructive/15 px-3.5 py-2.5 rounded-lg">
               {state.error}
-            </p>
+            </div>
           )}
 
-          <div className="space-y-2.5">
+          <div className="space-y-2.5 animate-fade-in-up animate-stagger-2">
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
@@ -48,19 +48,19 @@ export default function SignInPage() {
               placeholder="you@example.com"
               autoComplete="email"
               required
-              className="h-8"
+              className="h-9 transition-shadow focus-visible:shadow-[0_0_0_1px_var(--ring)]"
             />
             {state.fieldErrors?.email && (
               <p className="text-xs text-destructive">{state.fieldErrors.email[0]}</p>
             )}
           </div>
 
-          <div className="space-y-2.5">
+          <div className="space-y-2.5 animate-fade-in-up animate-stagger-3">
             <div className="flex items-center justify-between">
               <Label htmlFor="password">Password</Label>
               <Link
                 href="/forgot-password"
-                className="text-xs text-muted-foreground underline underline-offset-4 hover:text-primary"
+                className="text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground transition-colors"
               >
                 Forgot password?
               </Link>
@@ -71,30 +71,34 @@ export default function SignInPage() {
               placeholder="••••••••"
               autoComplete="current-password"
               required
-              className="h-8"
+              className="h-9 transition-shadow focus-visible:shadow-[0_0_0_1px_var(--ring)]"
             />
             {state.fieldErrors?.password && (
               <p className="text-xs text-destructive">{state.fieldErrors.password[0]}</p>
             )}
           </div>
 
-          <SubmitButton />
+          <div className="animate-fade-in-up animate-stagger-4">
+            <SubmitButton />
+          </div>
         </form>
 
-        <div className="relative my-4">
-          <div className="absolute -top-1/5 inset-0 flex items-center">
+        <div className="relative my-5 animate-fade-in-up animate-stagger-5">
+          <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+            <span className="bg-card px-2.5 text-muted-foreground/50 tracking-wider">or</span>
           </div>
         </div>
 
-        <GoogleSignInButton />
+        <div className="animate-fade-in-up animate-stagger-6">
+          <GoogleSignInButton />
+        </div>
 
-        <p className="text-center text-sm text-muted-foreground mt-4">
+        <p className="text-center text-sm text-muted-foreground mt-5 animate-fade-in-up animate-stagger-7">
           Don&apos;t have an account?{" "}
-          <Link href="/sign-up" className="text-foreground underline underline-offset-4 hover:text-primary">
+          <Link href="/sign-up" className="text-foreground underline underline-offset-4 hover:text-foreground/80 transition-colors">
             Sign up
           </Link>
         </p>
