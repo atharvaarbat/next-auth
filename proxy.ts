@@ -5,7 +5,7 @@ import { verifyToken } from "@/lib/jwt"
 const COOKIE_NAME = "auth-token"
 const publicPaths = ["/sign-in", "/sign-up", "/verify-email", "/forgot-password", "/reset-password", "/api/auth"]
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
   const token = request.cookies.get(COOKIE_NAME)?.value
   const isPublic = publicPaths.some((p) => pathname.startsWith(p))
