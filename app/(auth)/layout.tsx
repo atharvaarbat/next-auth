@@ -33,7 +33,7 @@ export default async function AuthLayout({ children }: Props) {
       <div className="col-span-5 flex flex-col gap-4 p-6 md:p-10 lg:col-span-2">
         <div className="flex justify-center gap-2 animate-fade-in md:justify-start">
           <a href="#" className="flex items-center gap-2 font-medium">
-            <Image src="/vercel.svg" alt="Logo" width={24} height={24} className="h-6 w-6" />
+            <Image src="/next-auth.png" alt="Logo" width={24} height={24} className="h-6 w-6" />
             Next Auth
           </a>
         </div>

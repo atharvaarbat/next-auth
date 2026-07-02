@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { PasswordInput } from "@/components/ui/password-input"
 import { GoogleSignInButton } from "@/components/auth/google-sign-in-button"
+import { PasskeySignInButton } from "@/components/auth/passkey-sign-in-button"
 
 function SubmitButton() {
   const { pending } = useFormStatus()
@@ -86,12 +87,13 @@ export default function SignInPage() {
             <span className="w-full border-t" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-card px-2.5 tracking-wider text-muted-foreground/50">or</span>
+            <span className="bg-background px-2.5 tracking-wider text-muted-foreground/50">or</span>
           </div>
         </div>
 
-        <div className="animate-fade-in-up animate-stagger-6">
+        <div className="animate-fade-in-up animate-stagger-6 space-y-2">
           <GoogleSignInButton />
+          <PasskeySignInButton />
         </div>
 
         <p className="mt-5 text-center text-sm text-muted-foreground animate-fade-in-up animate-stagger-7">
