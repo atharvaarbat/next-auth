@@ -14,8 +14,8 @@ import { GoogleSignInButton } from "@/components/auth/google-sign-in-button"
 function SubmitButton() {
   const { pending } = useFormStatus()
   return (
-    <Button type="submit" className="w-full my-4 h-11" size='lg' disabled={pending}>
-      {pending ? "Signing in…" : "Sign in"}
+    <Button type="submit" className="my-4 h-11 w-full" size="lg" disabled={pending}>
+      {pending ? "Signing in..." : "Sign in"}
     </Button>
   )
 }
@@ -26,20 +26,18 @@ export default function SignInPage() {
   return (
     <div className="space-y-6">
       <div className="animate-fade-in-up animate-stagger-1">
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Welcome back
-        </h1>
-        <p className="text-sm text-muted-foreground mt-1.5">Sign in to your account</p>
+        <h1 className="text-2xl font-semibold tracking-tight">Welcome back</h1>
+        <p className="mt-1.5 text-sm text-muted-foreground">Sign in to your account</p>
       </div>
       <CardContent className="p-0">
         <form action={action} className="space-y-4">
           {state.error && (
-            <div className="animate-fade-in text-sm text-destructive bg-destructive/8 border border-destructive/15 px-3.5 py-2.5 rounded-lg">
+            <div className="animate-fade-in rounded-lg border border-destructive/15 bg-destructive/8 px-3.5 py-2.5 text-sm text-destructive">
               {state.error}
             </div>
           )}
 
-          <div className="space-y-2.5 animate-fade-in-up animate-stagger-2">
+          <div className="animate-fade-in-up animate-stagger-2 space-y-2.5">
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
@@ -55,12 +53,12 @@ export default function SignInPage() {
             )}
           </div>
 
-          <div className="space-y-2.5 animate-fade-in-up animate-stagger-3">
+          <div className="animate-fade-in-up animate-stagger-3 space-y-2.5">
             <div className="flex items-center justify-between">
               <Label htmlFor="password">Password</Label>
               <Link
                 href="/forgot-password"
-                className="text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground transition-colors"
+                className="text-xs text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
               >
                 Forgot password?
               </Link>
@@ -68,7 +66,7 @@ export default function SignInPage() {
             <PasswordInput
               id="password"
               name="password"
-              placeholder="••••••••"
+              placeholder="........"
               autoComplete="current-password"
               required
               className="h-9 transition-shadow focus-visible:shadow-[0_0_0_1px_var(--ring)]"
@@ -88,7 +86,7 @@ export default function SignInPage() {
             <span className="w-full border-t" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-card px-2.5 text-muted-foreground/50 tracking-wider">or</span>
+            <span className="bg-card px-2.5 tracking-wider text-muted-foreground/50">or</span>
           </div>
         </div>
 
@@ -96,9 +94,12 @@ export default function SignInPage() {
           <GoogleSignInButton />
         </div>
 
-        <p className="text-center text-sm text-muted-foreground mt-5 animate-fade-in-up animate-stagger-7">
+        <p className="mt-5 text-center text-sm text-muted-foreground animate-fade-in-up animate-stagger-7">
           Don&apos;t have an account?{" "}
-          <Link href="/sign-up" className="text-foreground underline underline-offset-4 hover:text-foreground/80 transition-colors">
+          <Link
+            href="/sign-up"
+            className="text-foreground underline underline-offset-4 transition-colors hover:text-foreground/80"
+          >
             Sign up
           </Link>
         </p>

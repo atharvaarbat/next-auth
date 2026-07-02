@@ -83,7 +83,11 @@ export async function GET(request: NextRequest) {
     })
   }
 
-  const token = await signToken({ userId: user.id, email: user.email })
+  const token = await signToken({
+    userId: user.id,
+    email: user.email,
+    sessionVersion: user.sessionVersion,
+  })
   const response = NextResponse.redirect(new URL("/dashboard", request.url))
   response.cookies.set("auth-token", token, {
     httpOnly: true,

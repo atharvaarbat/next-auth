@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter, Google_Sans } from "next/font/google";
+import { Geist, Geist_Mono, Google_Sans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 const googleSans = Google_Sans({ subsets: ['latin'], variable: '--font-sans' });
 
 const geistSans = Geist({

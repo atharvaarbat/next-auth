@@ -12,8 +12,8 @@ import { Label } from "@/components/ui/label"
 function SubmitButton() {
   const { pending } = useFormStatus()
   return (
-    <Button type="submit" className="w-full my-4" size='lg' disabled={pending}>
-      {pending ? "Sending…" : "Send reset code"}
+    <Button type="submit" className="my-4 w-full" size="lg" disabled={pending}>
+      {pending ? "Sending..." : "Send reset code"}
     </Button>
   )
 }
@@ -24,20 +24,20 @@ export default function ForgotPasswordPage() {
   return (
     <div className="space-y-6">
       <div className="animate-fade-in-up animate-stagger-1">
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Forgot password?
-        </h1>
-        <p className="text-sm text-muted-foreground mt-1.5">Enter your email and we&apos;ll send you a reset code</p>
+        <h1 className="text-2xl font-semibold tracking-tight">Forgot password?</h1>
+        <p className="mt-1.5 text-sm text-muted-foreground">
+          Enter your email and we&apos;ll send you a reset code
+        </p>
       </div>
       <CardContent className="p-0">
         <form action={action} className="space-y-4">
           {state.error && (
-            <div className="animate-fade-in text-sm text-destructive bg-destructive/8 border border-destructive/15 px-3.5 py-2.5 rounded-lg">
+            <div className="animate-fade-in rounded-lg border border-destructive/15 bg-destructive/8 px-3.5 py-2.5 text-sm text-destructive">
               {state.error}
             </div>
           )}
 
-          <div className="space-y-2.5 animate-fade-in-up animate-stagger-2">
+          <div className="animate-fade-in-up animate-stagger-2 space-y-2.5">
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
@@ -57,9 +57,12 @@ export default function ForgotPasswordPage() {
             <SubmitButton />
           </div>
 
-          <p className="text-center text-sm text-muted-foreground animate-fade-in-up animate-stagger-4">
+          <p className="animate-fade-in-up animate-stagger-4 text-center text-sm text-muted-foreground">
             Remembered your password?{" "}
-            <Link href="/sign-in" className="text-foreground underline underline-offset-4 hover:text-foreground/80 transition-colors">
+            <Link
+              href="/sign-in"
+              className="text-foreground underline underline-offset-4 transition-colors hover:text-foreground/80"
+            >
               Sign in
             </Link>
           </p>

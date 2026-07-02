@@ -85,11 +85,13 @@ export async function signUp(_prevState: AuthState, formData: FormData): Promise
   const { name, email, password } = result.data
 
   const existing = await db.user.findUnique({ where: { email } })
-  if (!existing) {
-    const hashed = await bcrypt.hash(password, 12)
-    const otp = await createOtp({ email, type: "SIGN_UP", payload: { name, password: hashed } })
-    await sendVerificationEmail(email, otp)
+  if (existing) {
+    return { error: "An account with this email already exists. Please sign in instead." }
   }
+
+  const hashed = await bcrypt.hash(password, 12)
+  const otp = await createOtp({ email, type: "SIGN_UP", payload: { name, password: hashed } })
+  await sendVerificationEmail(email, otp)
 
   redirect(`/verify-email?email=${encodeURIComponent(email)}`)
 }
@@ -119,7 +121,11 @@ export async function verifySignUpOtp(_prevState: OtpState, formData: FormData):
   const { name, password } = check.payload as { name: string; password: string }
   const user = await db.user.create({ data: { name, email, password } })
 
-  const token = await signToken({ userId: user.id, email: user.email })
+  const token = await signToken({
+    userId: user.id,
+    email: user.email,
+    sessionVersion: user.sessionVersion,
+  })
   await setAuthCookie(token)
   redirect("/dashboard")
 }
@@ -154,7 +160,7 @@ export async function signIn(_prevState: AuthState, formData: FormData): Promise
 
   const user = await db.user.findUnique({ where: { email } })
   if (!user || !user.password) {
-    return { error: "This account uses Google Sign-In. Please sign in with Google." }
+    return { error: "Invalid email or password." }
   }
 
   if (user.lockedUntil && user.lockedUntil > new Date()) {
@@ -184,7 +190,11 @@ export async function signIn(_prevState: AuthState, formData: FormData): Promise
     })
   }
 
-  const token = await signToken({ userId: user.id, email: user.email })
+  const token = await signToken({
+    userId: user.id,
+    email: user.email,
+    sessionVersion: user.sessionVersion,
+  })
   await setAuthCookie(token)
   redirect("/dashboard")
 }
@@ -249,9 +259,21 @@ export async function resetPassword(_prevState: OtpState, formData: FormData): P
   }
 
   const hashed = await bcrypt.hash(password, 12)
-  await db.user.update({ where: { email }, data: { password: hashed } })
+  const updatedUser = await db.user.update({
+    where: { email },
+    data: {
+      password: hashed,
+      failedLoginAttempts: 0,
+      lockedUntil: null,
+      sessionVersion: { increment: 1 },
+    },
+  })
 
-  const token = await signToken({ userId: user.id, email: user.email })
+  const token = await signToken({
+    userId: updatedUser.id,
+    email: updatedUser.email,
+    sessionVersion: updatedUser.sessionVersion,
+  })
   await setAuthCookie(token)
   redirect("/dashboard")
 }

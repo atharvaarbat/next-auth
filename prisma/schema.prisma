@@ -17,6 +17,7 @@ model User {
   googleId            String?   @unique
   name                String?
   image               String?
+  sessionVersion      Int       @default(0)
   failedLoginAttempts Int       @default(0)
   lockedUntil         DateTime?
   createdAt           DateTime  @default(now())
