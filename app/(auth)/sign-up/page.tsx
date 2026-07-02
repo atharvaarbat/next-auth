@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { PasswordInput } from "@/components/ui/password-input"
 import { GoogleSignInButton } from "@/components/auth/google-sign-in-button"
+import { GitHubSignInButton } from "@/components/auth/github-sign-in-button"
 
 function SubmitButton() {
   const { pending } = useFormStatus()
@@ -184,6 +185,7 @@ export default function SignUpPage() {
 
         <div className="animate-fade-in-up animate-stagger-8">
           <GoogleSignInButton />
+          <GitHubSignInButton />
         </div>
 
         <p className="mt-5 text-center text-sm text-muted-foreground animate-fade-in-up animate-stagger-8">

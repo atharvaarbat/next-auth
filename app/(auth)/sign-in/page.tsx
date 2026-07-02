@@ -1,6 +1,6 @@
 "use client"
 
-import { useActionState } from "react"
+import { use, useActionState } from "react"
 import { useFormStatus } from "react-dom"
 import Link from "next/link"
 import { signIn, type AuthState } from "@/lib/actions/auth"
@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { PasswordInput } from "@/components/ui/password-input"
 import { GoogleSignInButton } from "@/components/auth/google-sign-in-button"
+import { GitHubSignInButton } from "@/components/auth/github-sign-in-button"
 import { PasskeySignInButton } from "@/components/auth/passkey-sign-in-button"
 
 function SubmitButton() {
@@ -21,7 +22,23 @@ function SubmitButton() {
   )
 }
 
-export default function SignInPage() {
+const OAUTH_ERROR_MESSAGES: Record<string, string> = {
+  oauth_denied: "Sign-in was cancelled.",
+  oauth_state: "Your sign-in session expired. Please try again.",
+  oauth_config: "This sign-in method isn't configured correctly.",
+  oauth_token: "Couldn't complete sign-in with the provider. Please try again.",
+  oauth_user: "Couldn't retrieve your profile from the provider.",
+  oauth_email:
+    "We couldn't get a verified email from your account. Make sure your provider account has a verified email address.",
+}
+
+export default function SignInPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>
+}) {
+  const { error: oauthErrorCode } = use(searchParams)
+  const oauthError = oauthErrorCode ? OAUTH_ERROR_MESSAGES[oauthErrorCode] : undefined
   const [state, action] = useActionState<AuthState, FormData>(signIn, {})
 
   return (
@@ -31,6 +48,11 @@ export default function SignInPage() {
         <p className="mt-1.5 text-sm text-muted-foreground">Sign in to your account</p>
       </div>
       <CardContent className="p-0">
+        {oauthError && (
+          <div className="animate-fade-in mb-4 rounded-lg border border-destructive/15 bg-destructive/8 px-3.5 py-2.5 text-sm text-destructive">
+            {oauthError}
+          </div>
+        )}
         <form action={action} className="space-y-4">
           {state.error && (
             <div className="animate-fade-in rounded-lg border border-destructive/15 bg-destructive/8 px-3.5 py-2.5 text-sm text-destructive">
@@ -93,6 +115,7 @@ export default function SignInPage() {
 
         <div className="animate-fade-in-up animate-stagger-6 space-y-2">
           <GoogleSignInButton />
+          <GitHubSignInButton />
           <PasskeySignInButton />
         </div>
 
