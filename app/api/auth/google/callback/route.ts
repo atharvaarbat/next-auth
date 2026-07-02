@@ -2,13 +2,23 @@ import { NextRequest, NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { signToken } from "@/lib/jwt"
 
+const STATE_COOKIE_NAME = "oauth-state"
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const code = searchParams.get("code")
   const error = searchParams.get("error")
+  const state = searchParams.get("state")
+  const expectedState = request.cookies.get(STATE_COOKIE_NAME)?.value
 
   if (error || !code) {
     return NextResponse.redirect(new URL("/sign-in?error=oauth_denied", request.url))
+  }
+
+  if (!state || !expectedState || state !== expectedState) {
+    const response = NextResponse.redirect(new URL("/sign-in?error=oauth_state", request.url))
+    response.cookies.delete(STATE_COOKIE_NAME)
+    return response
   }
 
   const clientId = process.env.GOOGLE_CLIENT_ID
@@ -47,6 +57,10 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(new URL("/sign-in?error=oauth_user", request.url))
   }
 
+  if (!googleUser.verified_email) {
+    return NextResponse.redirect(new URL("/sign-in?error=oauth_unverified_email", request.url))
+  }
+
   const { id: googleId, email, name, picture } = googleUser
 
   // Find existing user by googleId or email
@@ -69,7 +83,7 @@ export async function GET(request: NextRequest) {
     })
   }
 
-  const token = signToken({ userId: user.id, email: user.email })
+  const token = await signToken({ userId: user.id, email: user.email })
   const response = NextResponse.redirect(new URL("/dashboard", request.url))
   response.cookies.set("auth-token", token, {
     httpOnly: true,
@@ -78,6 +92,7 @@ export async function GET(request: NextRequest) {
     maxAge: 60 * 60 * 24 * 7,
     path: "/",
   })
+  response.cookies.delete(STATE_COOKIE_NAME)
 
   return response
 }

@@ -34,7 +34,7 @@ const layout = ({ children }: Props) => {
                     </div>
                 </div>
             </div>
-            <div className="col-span-3 relative hidden rounded-l-2xl dark:rounded-l-0 bg-muted dark:bg-muted/30 lg:block overflow-hidden">
+            <div className="col-span-3 relative hidden rounded-l-2xl dark:rounded-l-0 bg-muted dark:bg-muted/50 lg:block overflow-hidden">
                 <div className="absolute inset-0 z-20  p-12 animate-slide-in-right">
                     {/* <p className="text-xs font-mono uppercase tracking-[0.2em] mb-4">
                         Authentication Template
@@ -62,7 +62,8 @@ const layout = ({ children }: Props) => {
                         maskImage: 'radial-gradient(ellipse at center, transparent 25%, black 70%)',
                         WebkitMaskImage: 'radial-gradient(ellipse at center, transparent 25%, black 70%)',
                     }}
-                />            </div>
+                />
+            </div>
         </div>
     )
 }

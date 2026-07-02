@@ -46,6 +46,9 @@ const resetPasswordSchema = z.object({
   path: ["confirmPassword"],
 })
 
+const MAX_LOGIN_ATTEMPTS = 5
+const LOCKOUT_MINUTES = 15
+
 export type AuthState = {
   error?: string
   fieldErrors?: Record<string, string[]>
@@ -82,13 +85,11 @@ export async function signUp(_prevState: AuthState, formData: FormData): Promise
   const { name, email, password } = result.data
 
   const existing = await db.user.findUnique({ where: { email } })
-  if (existing) {
-    return { error: "An account with this email already exists." }
+  if (!existing) {
+    const hashed = await bcrypt.hash(password, 12)
+    const otp = await createOtp({ email, type: "SIGN_UP", payload: { name, password: hashed } })
+    await sendVerificationEmail(email, otp)
   }
-
-  const hashed = await bcrypt.hash(password, 12)
-  const otp = await createOtp({ email, type: "SIGN_UP", payload: { name, password: hashed } })
-  await sendVerificationEmail(email, otp)
 
   redirect(`/verify-email?email=${encodeURIComponent(email)}`)
 }
@@ -118,7 +119,7 @@ export async function verifySignUpOtp(_prevState: OtpState, formData: FormData):
   const { name, password } = check.payload as { name: string; password: string }
   const user = await db.user.create({ data: { name, email, password } })
 
-  const token = signToken({ userId: user.id, email: user.email })
+  const token = await signToken({ userId: user.id, email: user.email })
   await setAuthCookie(token)
   redirect("/dashboard")
 }
@@ -156,12 +157,34 @@ export async function signIn(_prevState: AuthState, formData: FormData): Promise
     return { error: "This account uses Google Sign-In. Please sign in with Google." }
   }
 
-  const valid = await bcrypt.compare(password, user.password)
-  if (!valid) {
-    return { error: "Invalid email or password." }
+  if (user.lockedUntil && user.lockedUntil > new Date()) {
+    return { error: "Too many failed attempts. Please try again in a few minutes." }
   }
 
-  const token = signToken({ userId: user.id, email: user.email })
+  const valid = await bcrypt.compare(password, user.password)
+  if (!valid) {
+    const attempts = user.failedLoginAttempts + 1
+    const lockedOut = attempts >= MAX_LOGIN_ATTEMPTS
+    await db.user.update({
+      where: { id: user.id },
+      data: {
+        failedLoginAttempts: lockedOut ? 0 : attempts,
+        lockedUntil: lockedOut ? new Date(Date.now() + LOCKOUT_MINUTES * 60 * 1000) : null,
+      },
+    })
+    return lockedOut
+      ? { error: "Too many failed attempts. Please try again in a few minutes." }
+      : { error: "Invalid email or password." }
+  }
+
+  if (user.failedLoginAttempts > 0 || user.lockedUntil) {
+    await db.user.update({
+      where: { id: user.id },
+      data: { failedLoginAttempts: 0, lockedUntil: null },
+    })
+  }
+
+  const token = await signToken({ userId: user.id, email: user.email })
   await setAuthCookie(token)
   redirect("/dashboard")
 }
@@ -228,7 +251,7 @@ export async function resetPassword(_prevState: OtpState, formData: FormData): P
   const hashed = await bcrypt.hash(password, 12)
   await db.user.update({ where: { email }, data: { password: hashed } })
 
-  const token = signToken({ userId: user.id, email: user.email })
+  const token = await signToken({ userId: user.id, email: user.email })
   await setAuthCookie(token)
   redirect("/dashboard")
 }
