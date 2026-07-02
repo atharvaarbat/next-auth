@@ -1,3 +1,5 @@
+![Banner](/public/banner.jpg)
+
 # Next Auth Template
 
 A production-ready authentication template for SaaS applications built with **Next.js 16**, **Tailwind CSS v4**, and **shadcn/ui**. Features a fully custom password-based auth system with email verification via OTP.

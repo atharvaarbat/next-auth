@@ -73,7 +73,12 @@ export async function GET(request: NextRequest) {
     if (!user.googleId) {
       user = await db.user.update({
         where: { id: user.id },
-        data: { googleId, image: picture || user.image },
+        data: { googleId, image: picture || user.image, name: name || user.name },
+      })
+    } else {
+      user = await db.user.update({
+        where: { id: user.id },
+        data: { image: picture || user.image, name: name || user.name },
       })
     }
   } else {

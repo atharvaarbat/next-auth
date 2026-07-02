@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Google_Sans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const googleSans = Google_Sans({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -32,14 +33,16 @@ export default function RootLayout({
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", googleSans.variable)}
     >
       <body className="min-h-full flex flex-col">
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <TooltipProvider>
             {children}
-          </ThemeProvider>
+          </TooltipProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
