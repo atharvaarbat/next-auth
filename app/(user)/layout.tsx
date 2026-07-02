@@ -1,11 +1,11 @@
 import { redirect } from "next/navigation"
 import { getSession } from "@/lib/auth"
 import { db } from "@/lib/db"
-import { AppSidebar } from "@/components/app-sidebar"
-import { ChartAreaInteractive } from "@/components/chart-area-interactive"
-import { DataTable } from "@/components/data-table"
-import { SectionCards } from "@/components/section-cards"
-import { SiteHeader } from "@/components/site-header"
+import { AppSidebar } from "@/components/layout/app-sidebar"
+import { ChartAreaInteractive } from "@/components/charts/chart-area-interactive"
+import { DataTable } from "@/components/tables/data-table"
+import { SectionCards } from "@/components/cards/section-cards"
+import { SiteHeader } from "@/components/layout/site-header"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 
 export default async function UserLayout({

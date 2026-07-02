@@ -18,22 +18,6 @@ export default async function DashboardPage() {
           <CardTitle className="text-2xl">Dashboard</CardTitle>
           <CardDescription>Signed in as {session.email}</CardDescription>
         </CardHeader>
-        {/* <CardContent className="space-y-3">
-          <Link href="/profile?tab=general">
-            <Button variant="outline" className="w-full">
-              Profile & Security
-            </Button>
-          </Link>
-          <Separator />
-          <div className="flex items-center justify-between gap-2">
-            <ModeToggle />
-            <form action={signOut}>
-              <Button type="submit" variant="outline">
-                Sign out
-              </Button>
-            </form>
-          </div>
-        </CardContent> */}
       </Card>
     </div>
   )

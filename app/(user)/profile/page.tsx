@@ -3,7 +3,7 @@ import { Suspense } from "react"
 import { getSession } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { getPasskeyCredentials } from "@/lib/actions/webauthn"
-import { ProfileTabs } from "./profile-tabs"
+import { ProfileTabs } from "./components/profile-tabs"
 
 export default async function ProfilePage() {
   const session = await getSession()
