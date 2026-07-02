@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { PasswordInput } from "@/components/ui/password-input"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { GoogleSignInButton } from "@/components/auth/google-sign-in-button"
 
 function SubmitButton() {
   const { pending } = useFormStatus()
@@ -145,9 +146,8 @@ export default function SignUpPage() {
                   {[0, 1, 2, 3].map((i) => (
                     <div
                       key={i}
-                      className={`h-1 flex-1 rounded-full transition-colors ${
-                        i < strength.score ? strength.color : "bg-muted"
-                      }`}
+                      className={`h-1 flex-1 rounded-full transition-colors ${i < strength.score ? strength.color : "bg-muted"
+                        }`}
                     />
                   ))}
                 </div>
@@ -172,14 +172,25 @@ export default function SignUpPage() {
           </div>
 
           <SubmitButton />
-
-          <p className="text-center text-sm text-muted-foreground">
-            Already have an account?{" "}
-            <Link href="/sign-in" className="text-foreground underline underline-offset-4 hover:text-primary">
-              Sign in
-            </Link>
-          </p>
         </form>
+        
+        <div className="relative my-4">
+          <div className="absolute -top-1/5 inset-0 flex items-center">
+            <span className="w-full border-t" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+          </div>
+        </div>
+
+        <GoogleSignInButton />
+
+        <p className="text-center text-sm text-muted-foreground mt-4">
+          Already have an account?{" "}
+          <Link href="/sign-in" className="text-foreground underline underline-offset-4 hover:text-primary">
+            Sign in
+          </Link>
+        </p>
       </CardContent>
     </div>
   )

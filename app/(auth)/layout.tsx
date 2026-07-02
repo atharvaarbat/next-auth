@@ -35,7 +35,7 @@ const layout = ({ children }: Props) => {
                     </div>
                 </div>
             </div>
-            <div className="col-span-3 relative hidden rounded-l-2xl dark:rounded-l-0 bg-muted dark:bg-muted/30 lg:block overflow-hidden">
+            <div className="col-span-3 relative hidden rounded-l-2xl dark:rounded-l-0 bg-muted dark:bg-muted/70 lg:block overflow-hidden">
                 <div className="absolute top-25 left-10 text-center z-20">
                     <h1 className='text-4xl font-medium'>The Next Big <span className='font-bold italic'> Auth</span></h1>
                 </div>
@@ -43,7 +43,7 @@ const layout = ({ children }: Props) => {
                     <DottedMap markers={markers} pulse dotColor='#000' />
                 </div>
                 <div className="hidden dark:block h-screen w-full overflow-hidden z-5">
-                    <DottedMap markers={markers} pulse  />
+                    <DottedMap markers={markers} pulse />
                 </div>
                 {/* Vignette: transparent in the center, darkening to the
                     background color toward the edges. */}

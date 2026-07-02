@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
 const COOKIE_NAME = "auth-token"
-const publicPaths = ["/sign-in", "/sign-up", "/verify-email", "/forgot-password", "/reset-password"]
+const publicPaths = ["/sign-in", "/sign-up", "/verify-email", "/forgot-password", "/reset-password", "/api/auth"]
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -28,5 +28,6 @@ export const config = {
     "/verify-email",
     "/forgot-password",
     "/reset-password",
+    "/api/auth/:path*",
   ],
 }

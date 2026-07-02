@@ -152,8 +152,8 @@ export async function signIn(_prevState: AuthState, formData: FormData): Promise
   const { email, password } = result.data
 
   const user = await db.user.findUnique({ where: { email } })
-  if (!user) {
-    return { error: "Invalid email or password." }
+  if (!user || !user.password) {
+    return { error: "This account uses Google Sign-In. Please sign in with Google." }
   }
 
   const valid = await bcrypt.compare(password, user.password)

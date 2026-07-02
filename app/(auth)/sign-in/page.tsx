@@ -5,10 +5,11 @@ import { useFormStatus } from "react-dom"
 import Link from "next/link"
 import { signIn, type AuthState } from "@/lib/actions/auth"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { PasswordInput } from "@/components/ui/password-input"
+import { GoogleSignInButton } from "@/components/auth/google-sign-in-button"
 
 function SubmitButton() {
   const { pending } = useFormStatus()
@@ -78,14 +79,25 @@ export default function SignInPage() {
           </div>
 
           <SubmitButton />
-
-          <p className="text-center text-sm text-muted-foreground">
-            Don&apos;t have an account?{" "}
-            <Link href="/sign-up" className="text-foreground underline underline-offset-4 hover:text-primary">
-              Sign up
-            </Link>
-          </p>
         </form>
+
+        <div className="relative my-4">
+          <div className="absolute -top-1/5 inset-0 flex items-center">
+            <span className="w-full border-t" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+          </div>
+        </div>
+
+        <GoogleSignInButton />
+
+        <p className="text-center text-sm text-muted-foreground mt-4">
+          Don&apos;t have an account?{" "}
+          <Link href="/sign-up" className="text-foreground underline underline-offset-4 hover:text-primary">
+            Sign up
+          </Link>
+        </p>
       </CardContent>
     </div>
   )
