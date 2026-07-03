@@ -11,7 +11,7 @@ export default async function ProfilePage() {
 
   const user = await db.user.findUnique({
     where: { id: session.userId },
-    select: { name: true, email: true, image: true, password: true, createdAt: true },
+    select: { name: true, email: true, image: true, password: true, googleId: true, githubId: true, createdAt: true },
   })
   if (!user) redirect("/sign-in")
 
@@ -33,6 +33,8 @@ export default async function ProfilePage() {
           initials,
           memberSince,
           hasPassword: !!user.password,
+          hasGoogle: !!user.googleId,
+          hasGithub: !!user.githubId,
         }}
         credentials={credentials}
       />

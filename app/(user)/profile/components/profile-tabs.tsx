@@ -8,6 +8,7 @@ import { ProfileForm } from "./profile-form"
 import { PasswordForm } from "./password-form"
 import { PasskeyManager } from "@/components/auth/passkey-manager"
 import { User, Shield } from "lucide-react"
+import { ConnectedAccounts } from "./connected-accounts"
 
 type UserData = {
   name: string
@@ -16,6 +17,8 @@ type UserData = {
   initials: string
   memberSince: string
   hasPassword: boolean
+  hasGoogle: boolean
+  hasGithub: boolean
 }
 
 type Credential = {
@@ -60,11 +63,11 @@ export function ProfileTabs({
         className="gap-6"
       >
         <TabsList className="w-44 shrink-0 bg-transparent">
-          <TabsTrigger value="general" className="gap-2 px-3">
+          <TabsTrigger value="general" className="gap-2 px-3 data-active:bg-muted/50">
             <User className="size-4" />
             General
           </TabsTrigger>
-          <TabsTrigger value="security" className="gap-2 px-3">
+          <TabsTrigger value="security" className="gap-2 px-3 data-active:bg-muted/50">
             <Shield className="size-4" />
             Security
           </TabsTrigger>
@@ -92,6 +95,21 @@ export function ProfileTabs({
             </CardHeader>
             <CardContent>
               <ProfileForm name={user.name} />
+            </CardContent>
+          </Card>
+
+          <Card className="mt-6">
+            <CardHeader>
+              <CardTitle>Connected Accounts</CardTitle>
+              <CardDescription>
+                Link your account with OAuth providers for easier sign-in.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ConnectedAccounts
+                hasGoogle={user.hasGoogle}
+                hasGithub={user.hasGithub}
+              />
             </CardContent>
           </Card>
         </TabsContent>

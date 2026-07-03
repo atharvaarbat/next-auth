@@ -12,6 +12,7 @@ import {
   removePasskey,
   renamePasskey,
 } from "@/lib/actions/webauthn"
+import { Trash2 } from "lucide-react"
 
 type Credential = {
   id: string
@@ -141,7 +142,7 @@ export function PasskeyManager({ initial }: { initial: Credential[] }) {
           {credentials.map((cred) => (
             <div
               key={cred.id}
-              className="flex items-center justify-between rounded-lg border px-3 py-2"
+              className="flex items-center justify-between rounded-lg border px-3 py-2 hover:bg-primary/20"
             >
               <div className="flex items-center gap-2 min-w-0">
                 <svg
@@ -214,22 +215,12 @@ export function PasskeyManager({ initial }: { initial: Credential[] }) {
 
               <Button
                 variant="ghost"
-                size="icon-xs"
+                size="icon"
                 onClick={() => handleRemove(cred.id)}
                 className="text-muted-foreground hover:text-destructive shrink-0"
                 title="Remove passkey"
               >
-                <svg
-                  viewBox="0 0 24 24"
-                  className="size-3.5"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M3 6h18" />
-                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
-                  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                </svg>
+                <Trash2/>
               </Button>
             </div>
           ))}
