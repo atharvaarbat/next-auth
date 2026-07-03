@@ -22,6 +22,7 @@ model User {
   failedLoginAttempts Int                 @default(0)
   lockedUntil         DateTime?
   passkeyCredentials  PasskeyCredential[]
+  authEvents          AuthEvent[]
   createdAt           DateTime            @default(now())
   updatedAt           DateTime            @updatedAt
 }
@@ -68,4 +69,41 @@ model VerificationToken {
   createdAt DateTime          @default(now())
 
   @@index([email, type])
+}
+
+model RateLimitAttempt {
+  key         String   @id
+  count       Int      @default(1)
+  windowStart DateTime @default(now())
+
+  @@index([windowStart])
+}
+
+enum AuthEventType {
+  SIGN_UP
+  LOGIN_SUCCESS
+  LOGIN_FAILURE
+  ACCOUNT_LOCKED
+  LOGOUT
+  PASSWORD_RESET_REQUESTED
+  PASSWORD_RESET_COMPLETED
+  OAUTH_LINKED
+  PASSKEY_ADDED
+  PASSKEY_REMOVED
+}
+
+model AuthEvent {
+  id        String        @id @default(cuid())
+  type      AuthEventType
+  userId    String?
+  user      User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  email     String?
+  ip        String?
+  userAgent String?
+  metadata  Json?
+  createdAt DateTime      @default(now())
+
+  @@index([userId])
+  @@index([type, createdAt])
+  @@index([email])
 }

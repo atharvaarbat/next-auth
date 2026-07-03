@@ -1,6 +1,7 @@
 "use server"
 
 import { redirect } from "next/navigation"
+import { after } from "next/server"
 import {
   generateRegistrationOptions,
   verifyRegistrationResponse,
@@ -14,6 +15,7 @@ import { db } from "@/lib/db"
 import { getSession, setAuthCookie } from "@/lib/auth"
 import { signToken } from "@/lib/jwt"
 import { getWebAuthnConfig, storeChallenge, consumeChallenge } from "@/lib/webauthn"
+import { logAuthEvent } from "@/lib/audit"
 
 const MAX_PASSKEYS_PER_USER = 10
 const MAX_PASSKEY_NAME_LENGTH = 64
@@ -122,6 +124,14 @@ export async function verifyPasskeyRegistration(
     return { error: "This passkey is already registered." }
   }
 
+  after(() =>
+    logAuthEvent({
+      type: "PASSKEY_ADDED",
+      userId: session.userId,
+      metadata: { credentialId: credential.id, deviceType: credentialDeviceType },
+    })
+  )
+
   return { success: true }
 }
 
@@ -211,6 +221,10 @@ export async function verifyPasskeyAuthentication(
   })
   await setAuthCookie(token)
 
+  after(() =>
+    logAuthEvent({ type: "LOGIN_SUCCESS", userId: user.id, email: user.email, metadata: { method: "passkey" } })
+  )
+
   redirect("/dashboard")
 }
 
@@ -264,6 +278,8 @@ export async function removePasskey(credentialId: string) {
   }
 
   await db.passkeyCredential.delete({ where: { id: credentialId } })
+
+  after(() => logAuthEvent({ type: "PASSKEY_REMOVED", userId: session.userId, metadata: { credentialId } }))
 }
 
 export async function renamePasskey(credentialId: string, name: string) {

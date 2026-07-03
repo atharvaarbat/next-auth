@@ -1,5 +1,7 @@
 # Repository Context
 
+> **Important:** This is not the `next-auth` npm package (Auth.js/NextAuth.js). Do not suggest or use `signIn`, `signOut`, `getServerSession`, `SessionProvider`, `NextAuthConfig`, or any other Auth.js API — none of them exist in this codebase. All auth logic is hand-rolled; see `lib/auth.ts`, `lib/jwt.ts`, `lib/otp.ts`, and `lib/actions/auth.ts`.
+
 This repository is a Next.js 16 authentication template for SaaS apps.
 It uses a custom auth stack with:
 
@@ -28,9 +30,9 @@ The app is built with:
 - `components/auth` contains auth UI, provider buttons, and passkey controls.
 - `app/(user)/profile` contains profile management UI and related tabs/forms.
 - `lib/actions` contains server actions for auth, profile, and WebAuthn flows.
-- `lib` also contains shared helpers such as session, JWT, OTP, email, and DB utilities.
+- `lib` also contains shared helpers such as session, JWT, OTP, email, and DB utilities, plus `rate-limit.ts` (Postgres-backed rate limiting), `audit.ts` (auth event logging), and `request-info.ts` (client IP/user-agent helpers).
 - `prisma/schema.prisma` is the source of truth for the data model.
-- `proxy.ts` handles route protection and redirect behavior.
+- `proxy.ts` handles route protection, redirect behavior, and generates the per-request CSP nonce.
 
 ## Important Data Model Notes
 
@@ -38,6 +40,8 @@ The app is built with:
 - `PasskeyCredential` stores WebAuthn credential data per user.
 - `WebAuthnChallenge` stores temporary challenges for registration and authentication.
 - `VerificationToken` stores OTP hashes for sign-up and password reset flows.
+- `RateLimitAttempt` is a fixed-window counter table used by `lib/rate-limit.ts` — keyed by an arbitrary string like `sign-in:ip:1.2.3.4`.
+- `AuthEvent` is an append-only audit log of auth-relevant events (logins, lockouts, password resets, passkey/OAuth changes), written via `lib/audit.ts`'s `logAuthEvent()`, dispatched through `after()` so it never adds latency to the auth flow it's observing.
 
 ## Common Workflows
 
@@ -62,11 +66,17 @@ pnpm build
 
 ### Database Migrations
 
+For a fresh clone or CI/CD, apply the checked-in migrations (no shadow database needed):
+
+```bash
+npx prisma migrate deploy
+```
+
+If you're changing `prisma/schema.prisma`, generate a new migration instead:
+
 ```bash
 npx prisma migrate dev --name <name>
 ```
-
-Use `npx prisma migrate deploy` in deployment pipelines.
 
 ## Environment Variables
 

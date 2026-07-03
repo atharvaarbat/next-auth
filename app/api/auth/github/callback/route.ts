@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from "next/server"
+import { NextRequest, NextResponse, after } from "next/server"
 import { db } from "@/lib/db"
 import { signToken } from "@/lib/jwt"
+import { logAuthEvent } from "@/lib/audit"
 
 const STATE_COOKIE_NAME = "oauth-state"
 
@@ -16,6 +17,7 @@ export async function GET(request: NextRequest) {
   }
 
   if (!state || !expectedState || state !== expectedState) {
+    after(() => logAuthEvent({ type: "LOGIN_FAILURE", metadata: { reason: "oauth_state_mismatch", provider: "github" } }))
     const response = NextResponse.redirect(new URL("/sign-in?error=oauth_state", request.url))
     response.cookies.delete(STATE_COOKIE_NAME)
     return response
@@ -84,12 +86,15 @@ export async function GET(request: NextRequest) {
     where: { OR: [{ githubId }, { email }] },
   })
 
+  let authEventType: "SIGN_UP" | "OAUTH_LINKED" | null = null
+
   if (user) {
     if (!user.githubId) {
       user = await db.user.update({
         where: { id: user.id },
         data: { githubId, image: image || user.image, name: name || user.name },
       })
+      authEventType = "OAUTH_LINKED"
     } else {
       user = await db.user.update({
         where: { id: user.id },
@@ -100,6 +105,7 @@ export async function GET(request: NextRequest) {
     user = await db.user.create({
       data: { githubId, email, name: name || email.split("@")[0], image },
     })
+    authEventType = "SIGN_UP"
   }
 
   const token = await signToken({
@@ -116,6 +122,24 @@ export async function GET(request: NextRequest) {
     path: "/",
   })
   response.cookies.delete(STATE_COOKIE_NAME)
+
+  const loggedInUser = user
+  after(async () => {
+    if (authEventType) {
+      await logAuthEvent({
+        type: authEventType,
+        userId: loggedInUser.id,
+        email: loggedInUser.email,
+        metadata: { method: "oauth_github" },
+      })
+    }
+    await logAuthEvent({
+      type: "LOGIN_SUCCESS",
+      userId: loggedInUser.id,
+      email: loggedInUser.email,
+      metadata: { method: "oauth_github" },
+    })
+  })
 
   return response
 }

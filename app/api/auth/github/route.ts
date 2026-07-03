@@ -1,9 +1,16 @@
 import crypto from "crypto"
-import { NextResponse } from "next/server"
+import { NextResponse, type NextRequest } from "next/server"
+import { checkRateLimit, RATE_LIMITS } from "@/lib/rate-limit"
+import { getClientIp } from "@/lib/request-info"
 
 const STATE_COOKIE_NAME = "oauth-state"
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const ip = await getClientIp()
+  if (!(await checkRateLimit(`oauth-start:ip:${ip}`, RATE_LIMITS.oauthStartIp))) {
+    return NextResponse.redirect(new URL("/sign-in?error=rate_limited", request.url))
+  }
+
   const clientId = process.env.GITHUB_CLIENT_ID
   if (!clientId) {
     return NextResponse.json({ error: "GitHub OAuth is not configured" }, { status: 500 })

@@ -16,6 +16,8 @@ A production-ready authentication starter for SaaS apps built with Next.js, Pris
 
 </div>
 
+> **Note:** Despite the repository name, this is **not** built on [NextAuth.js / Auth.js](https://authjs.dev). Authentication is fully hand-rolled — `jose` for JWTs, `bcrypt` for password hashing, `@simplewebauthn` for passkeys, and Prisma-backed sessions. No third-party auth framework is involved.
+
 It includes:
 
 - Email and password auth with OTP verification
@@ -38,11 +40,14 @@ It includes:
 - Passkey management from the profile page
 - Profile editing and password update flows
 - Cookie-based JWT sessions
-- Middleware-protected routes
+- Route protection via `proxy.ts`
 - Server Actions for auth and profile logic
 - Dark/light mode support
 - Responsive auth layouts
 - Built on reusable shadcn/ui components
+- Rate limiting on sign-up, sign-in, OTP, password reset, and OAuth start routes
+- Security headers and a nonce-based Content-Security-Policy
+- Auth event audit log (sign-ups, logins, lockouts, password resets, passkey and OAuth changes)
 
 ## Tech Stack
 
@@ -97,10 +102,10 @@ Required variables:
 ### 3. Run database migrations
 
 ```bash
-npx prisma migrate dev --name init
+npx prisma migrate deploy
 ```
 
-This creates the auth, OAuth, verification, and passkey tables in PostgreSQL.
+This applies the checked-in migrations and creates the auth, OAuth, verification, and passkey tables in PostgreSQL. `migrate deploy` is safe for fresh clones and CI/CD pipelines (no shadow database needed). If you're changing `prisma/schema.prisma` as a contributor, use `npx prisma migrate dev --name <description>` instead to generate a new migration.
 
 ### 4. Start the app
 
@@ -155,7 +160,7 @@ proxy.ts               Route protection and redirect logic
 - OAuth sign-in supports account linking through Google and GitHub.
 - Passkeys are stored per user and can be renamed or removed from the profile page.
 - The profile area also includes password updates and connected account management.
-- Protected routes are enforced on the server and through middleware.
+- Protected routes are enforced on the server and through `proxy.ts`.
 
 ## Deployment
 
