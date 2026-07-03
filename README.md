@@ -1,49 +1,78 @@
 ![Banner](/public/banner.jpg)
 
-# Next Auth Template
+<div align="center">
 
-A production-ready authentication template for SaaS applications built with **Next.js 16**, **Tailwind CSS v4**, and **shadcn/ui**. Features a fully custom password-based auth system with email verification via OTP.
+# SaaS Auth Template
+
+A production-ready authentication starter for SaaS apps built with Next.js, Prisma, OAuth, and passkeys.
+
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=nextdotjs)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Prisma](https://img.shields.io/badge/Prisma-7-2D3748?style=for-the-badge&logo=prisma)](https://www.prisma.io/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com/)
+[![shadcn/ui](https://img.shields.io/badge/shadcn/ui-Components-111827?style=for-the-badge)](https://ui.shadcn.com/)
+[![WebAuthn](https://img.shields.io/badge/Passkeys-WebAuthn-111827?style=for-the-badge)](https://webauthn.guide/)
+[![Resend](https://img.shields.io/badge/Email-Resend-000000?style=for-the-badge&logo=resend)](https://resend.com/)
+
+</div>
+
+It includes:
+
+- Email and password auth with OTP verification
+- Google and GitHub OAuth
+- Passkey sign-in and passkey management
+- Profile management for account settings
+- Protected authenticated routes and session handling
 
 ![Sign Up](/screenshots/sign-up.jpeg)
 ![Profile](/screenshots/profile.jpeg)
 
+## Features
+
+- Email/password sign up and sign in
+- OTP-based email verification
+- Forgot and reset password flow
+- Google OAuth
+- GitHub OAuth
+- Passkey sign-in with WebAuthn
+- Passkey management from the profile page
+- Profile editing and password update flows
+- Cookie-based JWT sessions
+- Middleware-protected routes
+- Server Actions for auth and profile logic
+- Dark/light mode support
+- Responsive auth layouts
+- Built on reusable shadcn/ui components
 
 ## Tech Stack
 
-- **Framework:** Next.js 16 (App Router)
-- **Authentication:** Custom (password + JWT + bcrypt)
-- **Database:** PostgreSQL + Prisma 7
-- **Styling:** Tailwind CSS v4 + shadcn/ui + Radix UI
-- **Email:** Resend
-- **Validation:** Zod
+- **Framework:** Next.js 16 App Router
 - **Language:** TypeScript
+- **Database:** PostgreSQL
+- **ORM:** Prisma 7
+- **Authentication:** Custom auth, OAuth, JWT, WebAuthn
+- **Styling:** Tailwind CSS v4, shadcn/ui, Radix UI
+- **Validation:** Zod
+- **Email:** Resend
+- **Passkeys:** `@simplewebauthn/browser` and `@simplewebauthn/server`
 
-## Features
+## Screenshots
 
-- Email/password sign up & sign in
-- OTP-based email verification (sign up & password reset)
-- Forgot / reset password flow
-- Cookie-based JWT sessions
-- Server Actions for all auth logic
-- Middleware-protected routes
-- Dark/light mode (keyboard shortcut: `D`)
-- Password strength indicator
-- 65+ shadcn/ui components
-- Responsive auth layouts (2-column on desktop)
-- Dotted-map background on auth pages
-- Ready for Stripe, roles, 2FA, etc.
+- Sign-in and sign-up flow
+- Profile management with connected accounts
+- Passkey registration and credential management
 
 ## Getting Started
 
-### 1. Clone and install
+### 1. Clone the repository
 
 ```bash
-git clone <your-repo-url> my-saas
+git clone https://github.com/atharvaarbat/next-auth my-saas
 cd my-saas
 pnpm install
 ```
 
-### 2. Set up environment variables
+### 2. Configure environment variables
 
 Copy `.env.example` to `.env` and fill in the values:
 
@@ -51,82 +80,104 @@ Copy `.env.example` to `.env` and fill in the values:
 cp .env.example .env
 ```
 
+Required variables:
+
 | Variable | Description |
 |---|---|
 | `DATABASE_URL` | PostgreSQL connection string |
-| `JWT_SECRET` | Secret key for signing JWTs |
-| `RESEND_API_KEY` | Resend API key for transactional emails |
-| `RESEND_FROM_EMAIL` | Sender email address (e.g. `noreply@yourdomain.com`) |
-| `NEXT_PUBLIC_APP_URL` | Your app URL (`http://localhost:3000` for dev) |
+| `JWT_SECRET` | Secret used to sign JWTs |
+| `RESEND_API_KEY` | Resend API key for transactional email |
+| `RESEND_FROM_EMAIL` | Verified sender email address |
+| `GOOGLE_CLIENT_ID` | Google OAuth client ID |
+| `GOOGLE_CLIENT_SECRET` | Google OAuth client secret |
+| `GITHUB_CLIENT_ID` | GitHub OAuth client ID |
+| `GITHUB_CLIENT_SECRET` | GitHub OAuth client secret |
+| `NEXT_PUBLIC_APP_URL` | Public app URL, for example `http://localhost:3000` |
 
-### 3. Set up the database
+### 3. Run database migrations
 
 ```bash
 npx prisma migrate dev --name init
 ```
 
-This creates the `User` and `VerificationToken` tables in your PostgreSQL database.
+This creates the auth, OAuth, verification, and passkey tables in PostgreSQL.
 
-### 4. Run the dev server
+### 4. Start the app
 
 ```bash
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) — you'll be redirected to `/sign-in`.
+Open [http://localhost:3000](http://localhost:3000). You will be redirected to the sign-in flow.
 
-## Auth Flows
+## Authentication Flows
 
-| Flow | Path | Server Action |
-|---|---|---|
-| Sign Up | `/sign-up` | `signUp` |
-| Sign In | `/sign-in` | `signIn` |
-| Forgot Password | `/forgot-password` | `forgotPassword` |
-| Reset Password | `/reset-password` | `resetPassword` |
-| Verify Email (OTP) | `/verify-email` | `verifyOtp` |
+| Flow | Path |
+|---|---|
+| Sign In | `/sign-in` |
+| Sign Up | `/sign-up` |
+| Verify Email | `/verify-email` |
+| Forgot Password | `/forgot-password` |
+| Reset Password | `/reset-password` |
+| Profile Management | `/profile` |
 
-All auth logic lives in `lib/actions/auth.ts`. Sessions are managed via an httpOnly `auth-token` cookie with a signed JWT.
+### Supported sign-in methods
+
+- Email and password
+- Google OAuth
+- GitHub OAuth
+- Passkey authentication
 
 ## Project Structure
 
-```
-├── app/
-│   ├── (auth)/          # Auth pages (sign-in, sign-up, etc.)
-│   ├── (user)/          # Authenticated pages (dashboard)
-│   └── layout.tsx       # Root layout with ThemeProvider
-├── components/
-│   ├── ui/              # shadcn/ui components
-│   └── auth/            # Auth-specific components
-├── lib/
-│   ├── actions/auth.ts  # Server actions for auth
-│   ├── auth.ts          # Session helpers (getSession, setAuthCookie)
-│   ├── db.ts            # Prisma client
-│   ├── email.ts         # Email templates + send functions
-│   ├── jwt.ts           # JWT sign/verify helpers
-│   ├── otp.ts           # OTP generation & verification
-│   └── utils.ts         # cn() utility
-├── prisma/
-│   └── schema.prisma    # Database schema
-└── middleware.ts        # Auth redirect logic
+```text
+app/
+  (auth)/              Auth pages: sign-in, sign-up, verification, reset
+  (user)/              Protected app area: dashboard and profile
+  api/auth/            OAuth routes and callbacks
+components/
+  auth/                Auth UI, passkey controls, provider buttons
+  sidebar/             App navigation
+lib/
+  actions/             Server Actions for auth, profile, and WebAuthn
+  auth.ts              Session helpers
+  db.ts                Prisma client
+  jwt.ts               JWT helpers
+  otp.ts               OTP generation and validation
+prisma/
+  schema.prisma        Database schema
+proxy.ts               Route protection and redirect logic
 ```
 
-## Adding to Your SaaS
+## Authentication Notes
 
-This template is intentionally minimal so you can build on top of it:
-
-1. **Stripe / Payments** — add subscriptions, one-time payments, or usage-based billing
-2. **Role-based access** — add a `role` field to the User model
-3. **OAuth** — integrate Google, GitHub, etc. via a custom flow or next-auth
-4. **API routes** — add REST or tRPC endpoints for your app logic
-5. **Rate limiting** — protect auth endpoints with upstash or similar
-6. **2FA** — add TOTP or passkeys on top of the existing auth
+- Email verification uses OTP tokens stored in the database.
+- OAuth sign-in supports account linking through Google and GitHub.
+- Passkeys are stored per user and can be renamed or removed from the profile page.
+- The profile area also includes password updates and connected account management.
+- Protected routes are enforced on the server and through middleware.
 
 ## Deployment
 
-Deploy to [Vercel](https://vercel.com) (recommended):
+This app is ready to deploy to Vercel or any Node.js host with PostgreSQL support.
 
-```bash
-npx vercel
-```
+Before deploying:
 
-Make sure to set all environment variables in your deployment dashboard and run `npx prisma migrate deploy` in your CI/CD pipeline.
+1. Set all environment variables in your hosting dashboard
+2. Run Prisma migrations in your deployment pipeline
+3. Ensure your OAuth redirect URLs match `NEXT_PUBLIC_APP_URL`
+4. Use HTTPS in production for OAuth and passkeys
+
+## Contributing
+
+Contributions are welcome.
+
+If you add a feature, update:
+
+1. The relevant route or component
+2. The Prisma schema if needed
+3. The README so setup and usage stay accurate
+
+## License
+
+Add your preferred license before publishing the repository publicly.
