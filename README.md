@@ -180,4 +180,4 @@ If you add a feature, update:
 
 ## License
 
-Add your preferred license before publishing the repository publicly.
+This project is licensed under the [MIT License](LICENSE).
