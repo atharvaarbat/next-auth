@@ -4,6 +4,10 @@
 
 A production-ready authentication template for SaaS applications built with **Next.js 16**, **Tailwind CSS v4**, and **shadcn/ui**. Features a fully custom password-based auth system with email verification via OTP.
 
+![Sign Up](/screenshots/sign-up.jpeg)
+![Profile](/screenshots/profile.jpeg)
+
+
 ## Tech Stack
 
 - **Framework:** Next.js 16 (App Router)

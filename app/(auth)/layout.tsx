@@ -49,12 +49,12 @@ export default async function AuthLayout({ children }: Props) {
       </div>
       <div className="relative col-span-3 hidden overflow-hidden rounded-l-2xl bg-muted dark:rounded-l-0 dark:bg-muted/50 lg:block">
         <div className="absolute inset-0 z-20 p-12 animate-slide-in-right">
-          <h1 className="max-w-xs text-4xl font-light leading-tight text-foreground/90">
+          <h1 className="max-w-xs text-balance text-4xl font-light leading-tight text-foreground/90">
             Build faster.
             <br />
             <span className="font-semibold text-primary">Ship sooner.</span>
           </h1>
-          <p className="mt-2 max-w-xs text-sm leading-relaxed">
+          <p className="mt-2 max-w-xs text-pretty text-sm leading-relaxed">
             Pre-built auth flows so you can focus on what makes your product
             unique.
           </p>
@@ -65,6 +65,7 @@ export default async function AuthLayout({ children }: Props) {
             alt="Logo"
             width={100}
             height={32}
+            className="invert dark:invert-0"
           />
         </div>
         <div className="z-5 block h-screen w-full overflow-hidden dark:hidden">

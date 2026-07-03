@@ -49,7 +49,7 @@ export function PasskeySignInButton() {
   return (
     <Button
       variant="outline"
-      className="w-full h-11 gap-2 transition-all duration-200 hover:bg-muted/50 active:scale-[0.98]"
+      className="w-full h-11 gap-2 transition-[background-color,transform] duration-200 hover:bg-muted/50 active:scale-[0.96]"
       onClick={handleSignIn}
       disabled={loading}
     >

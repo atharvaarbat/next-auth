@@ -79,8 +79,8 @@ export default function SignUpPage() {
   return (
     <div className="space-y-6">
       <div className="animate-fade-in-up animate-stagger-1">
-        <h1 className="text-2xl font-semibold tracking-tight">Create an account</h1>
-        <p className="mt-1.5 text-sm text-muted-foreground">Enter your details to get started</p>
+        <h1 className="text-balance text-2xl font-semibold tracking-tight">Create an account</h1>
+        <p className="mt-1.5 text-sm text-muted-foreground text-pretty">Enter your details to get started</p>
       </div>
       <CardContent className="p-0">
         <form action={action} onSubmit={handleSubmit} className="space-y-4">

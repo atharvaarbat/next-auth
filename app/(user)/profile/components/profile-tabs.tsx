@@ -49,9 +49,9 @@ export function ProfileTabs({
 
   return (
     <div className="mx-auto w-full max-w-4xl p-6">
-      <div className="mb-8">
-        <h1 className="text-lg font-semibold tracking-tight">Settings</h1>
-        <p className="mt-0.5 text-xs text-muted-foreground">
+      <div className="mb-8 animate-fade-in-up animate-stagger-1">
+        <h1 className="text-balance text-lg font-semibold tracking-tight">Settings</h1>
+        <p className="mt-0.5 text-xs text-muted-foreground text-pretty">
           Manage your account settings and security preferences
         </p>
       </div>
@@ -62,7 +62,7 @@ export function ProfileTabs({
         onValueChange={onTabChange}
         className="gap-6"
       >
-        <TabsList className="w-44 shrink-0 bg-transparent">
+        <TabsList className="w-44 shrink-0 animate-fade-in-up animate-stagger-2 bg-transparent">
           <TabsTrigger value="general" className="gap-2 px-3 data-active:bg-muted/50">
             <User className="size-4" />
             General
@@ -74,7 +74,7 @@ export function ProfileTabs({
         </TabsList>
 
         <TabsContent value="general" className="mt-0">
-          <div className="mb-8 flex items-center gap-4">
+          <div className="mb-8 flex animate-fade-in-up animate-stagger-2 items-center gap-4">
             <Avatar className="size-16">
               <AvatarImage src={user.image ?? undefined} />
               <AvatarFallback className="text-xl">{user.initials}</AvatarFallback>
@@ -88,7 +88,7 @@ export function ProfileTabs({
             </div>
           </div>
 
-          <Card>
+          <Card className="animate-fade-in-up animate-stagger-3">
             <CardHeader>
               <CardTitle>Profile</CardTitle>
               <CardDescription>Update your display name.</CardDescription>
@@ -98,7 +98,7 @@ export function ProfileTabs({
             </CardContent>
           </Card>
 
-          <Card className="mt-6">
+          <Card className="mt-6 animate-fade-in-up animate-stagger-4">
             <CardHeader>
               <CardTitle>Connected Accounts</CardTitle>
               <CardDescription>
@@ -117,7 +117,7 @@ export function ProfileTabs({
         <TabsContent value="security" className="mt-0">
           <div className="space-y-6">
             {user.hasPassword && (
-              <Card>
+              <Card className="animate-fade-in-up animate-stagger-2">
                 <CardHeader>
                   <CardTitle>Password</CardTitle>
                   <CardDescription>Change your account password.</CardDescription>
@@ -128,7 +128,7 @@ export function ProfileTabs({
               </Card>
             )}
 
-            <Card>
+            <Card className="animate-fade-in-up animate-stagger-3">
               <CardHeader>
                 <CardTitle>Passkeys</CardTitle>
                 <CardDescription>

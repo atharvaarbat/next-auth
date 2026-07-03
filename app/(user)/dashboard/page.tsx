@@ -13,9 +13,9 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center p-4">
-      <Card className="w-full max-w-sm">
+      <Card className="w-full max-w-sm animate-fade-in-up">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Dashboard</CardTitle>
+          <CardTitle className="text-balance text-2xl">Dashboard</CardTitle>
           <CardDescription>Signed in as {session.email}</CardDescription>
         </CardHeader>
       </Card>

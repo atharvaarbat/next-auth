@@ -142,7 +142,7 @@ export function PasskeyManager({ initial }: { initial: Credential[] }) {
           {credentials.map((cred) => (
             <div
               key={cred.id}
-              className="flex items-center justify-between rounded-lg border px-3 py-2 hover:bg-primary/20"
+              className="flex items-center justify-between rounded-md px-3 py-2 ring-1 ring-foreground/10 transition-colors hover:bg-muted/30"
             >
               <div className="flex items-center gap-2 min-w-0">
                 <svg
@@ -217,7 +217,7 @@ export function PasskeyManager({ initial }: { initial: Credential[] }) {
                 variant="ghost"
                 size="icon"
                 onClick={() => handleRemove(cred.id)}
-                className="text-muted-foreground hover:text-destructive shrink-0"
+                className="relative text-muted-foreground shrink-0 before:absolute before:-inset-1.5 before:content-[''] hover:text-destructive"
                 title="Remove passkey"
               >
                 <Trash2/>

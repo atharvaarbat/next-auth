@@ -44,8 +44,8 @@ export default function SignInPage({
   return (
     <div className="space-y-6">
       <div className="animate-fade-in-up animate-stagger-1">
-        <h1 className="text-2xl font-semibold tracking-tight">Welcome back</h1>
-        <p className="mt-1.5 text-sm text-muted-foreground">Sign in to your account</p>
+        <h1 className="text-balance text-2xl font-semibold tracking-tight">Welcome back</h1>
+        <p className="mt-1.5 text-sm text-muted-foreground text-pretty">Sign in to your account</p>
       </div>
       <CardContent className="p-0">
         {oauthError && (

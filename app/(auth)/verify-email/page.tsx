@@ -42,8 +42,8 @@ export default function VerifyEmailPage({
   return (
     <div className="space-y-6">
       <div className="animate-fade-in-up animate-stagger-1">
-        <h1 className="text-2xl font-semibold tracking-tight">Verify your email</h1>
-        <p className="mt-1.5 text-sm text-muted-foreground">
+        <h1 className="text-balance text-2xl font-semibold tracking-tight">Verify your email</h1>
+        <p className="mt-1.5 text-sm text-muted-foreground text-pretty">
           Enter the 6-digit code we sent to {email}
         </p>
       </div>

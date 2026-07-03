@@ -24,8 +24,8 @@ export default function ForgotPasswordPage() {
   return (
     <div className="space-y-6">
       <div className="animate-fade-in-up animate-stagger-1">
-        <h1 className="text-2xl font-semibold tracking-tight">Forgot password?</h1>
-        <p className="mt-1.5 text-sm text-muted-foreground">
+        <h1 className="text-balance text-2xl font-semibold tracking-tight">Forgot password?</h1>
+        <p className="mt-1.5 text-sm text-muted-foreground text-pretty">
           Enter your email and we&apos;ll send you a reset code
         </p>
       </div>

@@ -22,12 +22,12 @@ export function PasswordForm() {
   return (
     <form action={action} className="space-y-4">
       {state.success && (
-        <div className="rounded-md bg-primary/10 px-3 py-2 text-sm text-primary">
+        <div className="animate-fade-in rounded-lg border border-primary/15 bg-primary/8 px-3.5 py-2.5 text-sm text-primary">
           {state.success}
         </div>
       )}
       {state.error && (
-        <div className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
+        <div className="animate-fade-in rounded-lg border border-destructive/15 bg-destructive/8 px-3.5 py-2.5 text-sm text-destructive">
           {state.error}
         </div>
       )}

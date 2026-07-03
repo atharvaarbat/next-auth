@@ -52,7 +52,7 @@ export function ConnectedAccounts({
         return (
           <div
             key={id}
-            className="flex items-center justify-between rounded-lg border px-4 py-3"
+            className="flex items-center justify-between rounded-md px-4 py-3 ring-1 ring-foreground/10 transition-colors hover:bg-muted/30"
           >
             <div className="flex items-center gap-3">
               <Icon />
