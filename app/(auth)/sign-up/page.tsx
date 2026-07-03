@@ -183,7 +183,7 @@ export default function SignUpPage() {
           </div>
         </div>
 
-        <div className="animate-fade-in-up animate-stagger-8">
+        <div className="animate-fade-in-up animate-stagger-8 space-y-2">
           <GoogleSignInButton />
           <GitHubSignInButton />
         </div>

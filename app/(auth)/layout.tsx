@@ -1,12 +1,12 @@
-import Image from "next/image"
-import { redirect } from "next/navigation"
-import React from "react"
-import { DottedMap, Marker } from "@/components/ui/dotted-map"
-import { getSession } from "@/lib/auth"
+import Image from "next/image";
+import { redirect } from "next/navigation";
+import React from "react";
+import { DottedMap, Marker } from "@/components/ui/dotted-map";
+import { getSession } from "@/lib/auth";
 
 type Props = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
 const markers: Marker[] = [
   {
@@ -20,12 +20,12 @@ const markers: Marker[] = [
     size: 0.3,
     pulse: false,
   },
-]
+];
 
 export default async function AuthLayout({ children }: Props) {
-  const session = await getSession()
+  const session = await getSession();
   if (session) {
-    redirect("/dashboard")
+    redirect("/dashboard");
   }
 
   return (
@@ -33,7 +33,13 @@ export default async function AuthLayout({ children }: Props) {
       <div className="col-span-5 flex flex-col gap-4 p-6 md:p-10 lg:col-span-2">
         <div className="flex justify-center gap-2 animate-fade-in md:justify-start">
           <a href="#" className="flex items-center gap-2 font-medium">
-            <Image src="/next-auth.png" alt="Logo" width={24} height={24} className="h-6 w-6" />
+            <Image
+              src="/next-auth.png"
+              alt="Logo"
+              width={24}
+              height={24}
+              className="h-6 w-6"
+            />
             Next Auth
           </a>
         </div>
@@ -49,8 +55,17 @@ export default async function AuthLayout({ children }: Props) {
             <span className="font-semibold text-primary">Ship sooner.</span>
           </h1>
           <p className="mt-2 max-w-xs text-sm leading-relaxed">
-            Pre-built auth flows so you can focus on what makes your product unique.
+            Pre-built auth flows so you can focus on what makes your product
+            unique.
           </p>
+        </div>
+        <div className="absolute px-12 z-20 bottom-12 animate-slide-in-right">
+          <Image
+            src="/next-light.svg"
+            alt="Logo"
+            width={100}
+            height={32}
+          />
         </div>
         <div className="z-5 block h-screen w-full overflow-hidden dark:hidden">
           <DottedMap markers={markers} pulse dotColor="#000" />
@@ -63,11 +78,13 @@ export default async function AuthLayout({ children }: Props) {
           style={{
             backdropFilter: "blur(8px)",
             WebkitBackdropFilter: "blur(8px)",
-            maskImage: "radial-gradient(ellipse at center, transparent 25%, black 70%)",
-            WebkitMaskImage: "radial-gradient(ellipse at center, transparent 25%, black 70%)",
+            maskImage:
+              "radial-gradient(ellipse at center, transparent 25%, black 70%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse at center, transparent 25%, black 70%)",
           }}
         />
       </div>
     </div>
-  )
+  );
 }
