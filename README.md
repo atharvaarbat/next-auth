@@ -99,7 +99,38 @@ Required variables:
 | `GITHUB_CLIENT_SECRET` | GitHub OAuth client secret |
 | `NEXT_PUBLIC_APP_URL` | Public app URL, for example `http://localhost:3000` |
 
-### 3. Run database migrations
+### 3. Configure OAuth providers
+
+Before OAuth sign-in will work, you need to register OAuth apps with Google and GitHub and add the correct redirect URLs.
+
+#### Google OAuth
+
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/).
+2. Create a new project or select an existing one.
+3. Navigate to **APIs & Services** → **Credentials**.
+4. Click **Create Credentials** → **OAuth client ID**.
+5. Set **Application type** to **Web application**.
+6. Under **Authorized redirect URIs**, add:
+   ```
+   {NEXT_PUBLIC_APP_URL}/api/auth/google/callback
+   ```
+   For local development this would be `http://localhost:3000/api/auth/google/callback`.
+7. Copy the generated **Client ID** and **Client secret** to `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in your `.env` file.
+
+#### GitHub OAuth
+
+1. Go to **Settings** → **Developer settings** → [OAuth Apps](https://github.com/settings/developers) on GitHub.
+2. Click **New OAuth App**.
+3. Set the **Homepage URL** to your `NEXT_PUBLIC_APP_URL` (e.g. `http://localhost:3000`).
+4. Under **Authorization callback URL**, add:
+   ```
+   {NEXT_PUBLIC_APP_URL}/api/auth/github/callback
+   ```
+   For local development this would be `http://localhost:3000/api/auth/github/callback`.
+5. Click **Register application**.
+6. Copy the generated **Client ID** and generate a **Client secret**, then set them as `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` in your `.env` file.
+
+### 4. Run database migrations
 
 ```bash
 npx prisma migrate deploy
@@ -107,7 +138,7 @@ npx prisma migrate deploy
 
 This applies the checked-in migrations and creates the auth, OAuth, verification, and passkey tables in PostgreSQL. `migrate deploy` is safe for fresh clones and CI/CD pipelines (no shadow database needed). If you're changing `prisma/schema.prisma` as a contributor, use `npx prisma migrate dev --name <description>` instead to generate a new migration.
 
-### 4. Start the app
+### 5. Start the app
 
 ```bash
 pnpm dev
